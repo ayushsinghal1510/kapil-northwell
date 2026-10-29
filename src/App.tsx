@@ -68,7 +68,10 @@ export default function App() {
 }
 
 function Call({ sessionId, onStarted, onNext }: { sessionId: string; onStarted: (id: string) => void; onNext: () => void }) {
-  const v = useVoxioSession({ flowKey: FLOW_KEY, environment: 'gpu', sessionId, recording: true })
+  // media.video asks the voice server for the agent's lip-synced face.
+  const v = useVoxioSession({ flowKey: FLOW_KEY, environment: 'gpu', sessionId, recording: true, media: { audio: true, video: true } })
+  const face = useRef<HTMLVideoElement>(null)
+  useEffect(() => { if (face.current) face.current.srcObject = v.agentStream }, [v.agentStream])
   const live = v.state === 'connecting' || v.state === 'listening' || v.state === 'speaking'
   const done = v.state === 'ended' || v.state === 'error'
 
@@ -76,7 +79,9 @@ function Call({ sessionId, onStarted, onNext }: { sessionId: string; onStarted: 
 
   return (
     <section className="card call">
-      <div className={`orb is-${v.state}`} style={{ ['--lvl' as string]: String(Math.max(v.level.user, v.level.agent)) }} />
+      {v.agentStream
+        ? <video ref={face} className="face" autoPlay playsInline />
+        : <div className={`orb is-${v.state}`} style={{ ['--lvl' as string]: String(Math.max(v.level.user, v.level.agent)) }} />}
       <div className="call-body">
         <b>{STATE_TEXT[v.state] ?? v.state}</b>
         {v.error && <p className="err">{v.error.message}</p>}

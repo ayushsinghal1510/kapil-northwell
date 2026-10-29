@@ -4,7 +4,7 @@ A small dashboard to talk to a Voxio voice agent and listen back to each call.
 
 - The browser runs the voice session with `voxioagent/react` (`useVoxioSession`).
 - `api/session.ts` (a Vercel function) reads a session's recording and transcript with `voxioagent/server`.
-- `api/sessions.ts` keeps the shared list of calls as one JSON file, `recordings.json`, in Vercel Blob
+- `api/sessions.ts` keeps the shared list of calls as one JSON file, `recordings.json`, in a private Vercel Blob store
   (the SDK can't list a flow's sessions). `GET /api/sessions` returns it and fills in recording URLs once Voxio
   has saved them, which takes a minute or so after a call ends; `POST /api/sessions {id}` adds a call.
 
