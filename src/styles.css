@@ -12,3 +12,8 @@ button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid 
 button.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
 button.danger { background: #d92d20; border-color: #d92d20; color: #fff; }
 .log { max-height: 40vh; overflow: auto; padding: 12px; background: #fff; border: 1px solid #e4e7ec; border-radius: 12px; font-size: 12px; white-space: pre-wrap; word-break: break-word; }
+.chat { display: flex; flex-direction: column; gap: 8px; max-height: 50vh; overflow: auto; padding: 12px; background: #fff; border: 1px solid #e4e7ec; border-radius: 12px; }
+.bubble { margin: 0; max-width: 80%; padding: 8px 12px; border-radius: 14px; }
+.bubble.you { align-self: flex-end; background: #2563eb; color: #fff; border-bottom-right-radius: 4px; }
+.bubble.ai { align-self: flex-start; background: #f2f4f7; border-bottom-left-radius: 4px; }
+.muted { margin: 0; color: #667085; }
