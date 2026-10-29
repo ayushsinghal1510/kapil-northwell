@@ -1,55 +1,51 @@
-import { useEffect, useRef, useState } from 'react'
-import { useVoxioSession } from 'voxioagent/react'
+import { useEffect, useState } from 'react'
+import { VoxioAvatar } from 'voxioagent/react'
+import type { VoxioAvatar as AvatarElement } from 'voxioagent/widget'
 
 const FLOW_KEY = import.meta.env.VITE_VOXIO_FLOW_KEY as string | undefined
 
-const STATE_TEXT: Record<string, string> = {
-  idle: 'Ready', connecting: 'Connecting…', listening: 'Listening', speaking: 'Agent speaking', ended: 'Call ended', error: 'Something went wrong',
+// The flow's participants graph, as saved in Voxio (the agent is "ai").
+const PARTICIPANTS = {
+  ai_participant: 'ai',
+  participants: [
+    { name: 'user', connections: [{ name: 'ai', audio: true, video: true }] },
+    { name: 'ai', connections: [{ name: 'user', audio: true, video: false }] },
+  ],
 }
 
 export default function App() {
-  const [callId, setCallId] = useState(() => crypto.randomUUID())
+  const [avatar, setAvatar] = useState<AvatarElement | null>(null)
+  const [log, setLog] = useState<string[]>([])
 
-  if (!FLOW_KEY) {
-    return <main className="page"><p className="err">Set VITE_VOXIO_FLOW_KEY (see .env.example).</p></main>
-  }
+  // Print every message from the agent's data channel.
+  useEffect(() => {
+    const s = avatar?.session
+    if (!s) return
+    const add = (kind: string, data: unknown) => setLog((l) => [...l, `${kind} ${JSON.stringify(data)}`].slice(-300))
+    const offs = [
+      s.on('state', (st) => add('state', st)),
+      s.on('agent', (p) => { if (typeof p.chunk !== 'string' || p.is_last) add('agent', p) }),
+      s.on('message', (m) => add('message', m)),
+    ]
+    return () => offs.forEach((off) => off())
+  }, [avatar])
+
+  if (!FLOW_KEY) return <p>Set VITE_VOXIO_FLOW_KEY (see .env.example).</p>
 
   return (
     <main className="page">
-      <header className="head">
-        <h1>Voice session</h1>
-        <p className="muted">Talk to the agent. Every call is recorded in Voxio.</p>
-      </header>
-      {/* A fresh session per call: remounting starts a new session. */}
-      <Call key={callId} sessionId={callId} onNext={() => setCallId(crypto.randomUUID())} />
+      <h1>Voice session</h1>
+      <VoxioAvatar
+        flowKey={FLOW_KEY}
+        environment="gpu"
+        recording
+        participants={PARTICIPANTS}
+        placement="inline"
+        size="100%"
+        elementRef={setAvatar}
+      />
+      <h2>Data channel</h2>
+      <pre className="log">{log.join('\n') || 'Messages from the agent appear here during a call.'}</pre>
     </main>
-  )
-}
-
-function Call({ sessionId, onNext }: { sessionId: string; onNext: () => void }) {
-  // media.video asks the voice server for the agent's lip-synced face.
-  const v = useVoxioSession({ flowKey: FLOW_KEY, environment: 'gpu', sessionId, recording: true, media: { audio: true, video: true } })
-  const face = useRef<HTMLVideoElement>(null)
-  useEffect(() => { if (face.current) face.current.srcObject = v.agentStream }, [v.agentStream])
-  const live = v.state === 'connecting' || v.state === 'listening' || v.state === 'speaking'
-  const done = v.state === 'ended' || v.state === 'error'
-
-  return (
-    <section className="card call">
-      {v.agentStream
-        ? <video ref={face} className="face" autoPlay playsInline />
-        : <div className={`orb is-${v.state}`} style={{ ['--lvl' as string]: String(Math.max(v.level.user, v.level.agent)) }} />}
-      <div className="call-body">
-        <b>{STATE_TEXT[v.state] ?? v.state}</b>
-        {v.error && <p className="err">{v.error.message}</p>}
-        {v.reply?.text && <p className="reply">{v.reply.text}</p>}
-      </div>
-      <div className="actions">
-        {!live && !done && <button className="primary" onClick={() => void v.start()}>Start call</button>}
-        {live && <button onClick={() => v.mute(!v.muted)}>{v.muted ? 'Unmute' : 'Mute'}</button>}
-        {live && <button className="danger" onClick={() => void v.stop()}>End call</button>}
-        {done && <button className="primary" onClick={onNext}>New call</button>}
-      </div>
-    </section>
   )
 }
