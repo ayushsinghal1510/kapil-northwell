@@ -11,9 +11,14 @@ body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #f6f7f9; col
 button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid #e4e7ec; background: #fff; padding: 8px 16px; }
 button.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
 button.danger { background: #d92d20; border-color: #d92d20; color: #fff; }
-.log { max-height: 40vh; overflow: auto; padding: 12px; background: #fff; border: 1px solid #e4e7ec; border-radius: 12px; font-size: 12px; white-space: pre-wrap; word-break: break-word; }
 .chat { display: flex; flex-direction: column; gap: 8px; max-height: 50vh; overflow: auto; padding: 12px; background: #fff; border: 1px solid #e4e7ec; border-radius: 12px; }
 .bubble { margin: 0; max-width: 80%; padding: 8px 12px; border-radius: 14px; }
 .bubble.you { align-self: flex-end; background: #2563eb; color: #fff; border-bottom-right-radius: 4px; }
 .bubble.ai { align-self: flex-start; background: #f2f4f7; border-bottom-left-radius: 4px; }
 .muted { margin: 0; color: #667085; }
+.top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.who { color: #667085; font-size: 14px; }
+button.link { border: 0; background: none; padding: 0; color: #2563eb; }
+.login { max-width: 360px; margin: 10vh auto 0; justify-items: stretch; text-align: left; }
+.login h1 { margin: 0 0 4px; font-size: 22px; }
+.login input { font: inherit; padding: 10px 12px; border: 1px solid #e4e7ec; border-radius: 10px; }
