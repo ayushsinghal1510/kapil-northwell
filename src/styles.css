@@ -1,3 +1,14 @@
 body { margin: 0; font: 16px/1.5 system-ui, sans-serif; background: #f6f7f9; color: #14171c; }
 .page { max-width: 640px; margin: 0 auto; padding: 32px 16px; }
+.card { display: grid; justify-items: center; gap: 12px; padding: 24px; background: #fff; border: 1px solid #e4e7ec; border-radius: 16px; text-align: center; }
+.orb { --lvl: 0; width: 72px; height: 72px; border-radius: 50%; background: #e4e7ec; transform: scale(calc(1 + var(--lvl) * .5)); transition: transform .08s, background .2s; }
+.orb.is-listening { background: #2563eb; }
+.orb.is-speaking { background: #12b76a; }
+.orb.is-connecting { background: #98a2b3; }
+.reply { margin: 0; color: #667085; }
+.err { margin: 0; color: #d92d20; }
+.actions { display: flex; gap: 8px; }
+button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid #e4e7ec; background: #fff; padding: 8px 16px; }
+button.primary { background: #2563eb; border-color: #2563eb; color: #fff; }
+button.danger { background: #d92d20; border-color: #d92d20; color: #fff; }
 .log { max-height: 40vh; overflow: auto; padding: 12px; background: #fff; border: 1px solid #e4e7ec; border-radius: 12px; font-size: 12px; white-space: pre-wrap; word-break: break-word; }

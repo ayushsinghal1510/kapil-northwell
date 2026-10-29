@@ -1,6 +1,6 @@
 # Voice session
 
-A small page to talk to a Voxio voice agent, with the agent's face.
+A small page to talk to a Voxio voice agent (audio only), with the data channel printed below.
 
 - The browser runs the voice session with `voxioagent/react` (`useVoxioSession`), on Voxio's `gpu` environment.
 - Every call is recorded by Voxio. Recordings and transcripts are in the Voxio dashboard, under the flow's Sessions.
