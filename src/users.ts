@@ -1,12 +1,19 @@
-// Who can sign in, and which Voxio flow each person talks to. All three use the
-// same flow for now; give someone their own key by changing their entry.
-const SHARED_FLOW_KEY = import.meta.env.VITE_VOXIO_FLOW_KEY as string | undefined
+// Who can sign in, and which Voxio agents (flows) each person can talk to.
+// Keys come from env variables so they can change without a code change.
+export type Agent = { name: string; flowKey: string | undefined }
 
-export const USERS: Record<string, { flowKey: string | undefined }> = {
-  'kpnt@gmail.com': { flowKey: SHARED_FLOW_KEY },
-  'kpsp@gmail.com': { flowKey: SHARED_FLOW_KEY },
-  'kproche@gmail.com': { flowKey: SHARED_FLOW_KEY },
+const env = import.meta.env
+const ORIGINAL: Agent = { name: 'Margret Collins', flowKey: env.VITE_VOXIO_FLOW_KEY }
+const CHEMIST: Agent = { name: 'Chemist', flowKey: env.VITE_FLOW_KEY_CHEMIST }
+const DOCTOR: Agent = { name: 'Doctor', flowKey: env.VITE_FLOW_KEY_DOCTOR }
+const ROCHE_CALLER: Agent = { name: 'Caller', flowKey: env.VITE_FLOW_KEY_ROCHE_CALLER }
+const ROCHE_AGENT: Agent = { name: 'Agent', flowKey: env.VITE_FLOW_KEY_ROCHE_AGENT }
+
+export const USERS: Record<string, Agent[]> = {
+  'kpnt@gmail.com': [ORIGINAL],
+  'kpsp@gmail.com': [CHEMIST, DOCTOR],
+  'kproche@gmail.com': [ROCHE_CALLER, ROCHE_AGENT],
 }
 
 /** The shared sign-in password, set in VITE_LOGIN_PASSWORD. */
-export const PASSWORD = import.meta.env.VITE_LOGIN_PASSWORD as string | undefined
+export const PASSWORD = env.VITE_LOGIN_PASSWORD as string | undefined
