@@ -10,13 +10,13 @@
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
 .page { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; display: grid; gap: 20px; }
 .head h1 { margin: 0; font-size: 28px; }
-h2 { margin: 0 0 12px; font-size: 18px; }
 .muted { color: var(--muted); margin: 0; }
 .err { color: var(--danger); margin: 4px 0 0; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
 .call { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 .call-body { flex: 1; min-width: 180px; }
 .reply { margin: 6px 0 0; color: var(--muted); }
+.face { width: 100%; max-height: 60vh; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: #000; flex-basis: 100%; }
 .orb { --lvl: 0; width: 56px; height: 56px; border-radius: 50%; background: var(--line); transition: transform .08s, background .2s; transform: scale(calc(1 + var(--lvl) * .5)); }
 .orb.is-listening { background: var(--accent); }
 .orb.is-speaking { background: #12b76a; }
@@ -26,17 +26,3 @@ h2 { margin: 0 0 12px; font-size: 18px; }
 button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 8px 16px; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 button.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
-button.link { border: 0; background: none; padding: 0; color: var(--accent); }
-.danger-text { color: var(--danger) !important; }
-.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.item { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.item-head { width: 100%; display: flex; justify-content: space-between; gap: 12px; border: 0; border-radius: 0; text-align: left; }
-.item-body { padding: 4px 16px 16px; display: grid; gap: 12px; }
-audio { width: 100%; }
-.transcript { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; max-height: 320px; overflow: auto; }
-.transcript b { margin-right: 6px; }
-.t-user b { color: var(--accent); }
-.row { display: flex; gap: 16px; }
-.spread { justify-content: space-between; align-items: center; }
-a.link { color: var(--accent); text-decoration: none; }
-.face { width: 100%; max-height: 60vh; aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: #000; flex-basis: 100%; }
